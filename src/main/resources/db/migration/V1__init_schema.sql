@@ -1,0 +1,28 @@
+-- Table: users
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    balance NUMERIC(15, 2) NOT NULL
+);
+
+-- Table: operations
+CREATE TABLE operations (
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(50) NOT NULL UNIQUE,
+    cost NUMERIC(10, 2) NOT NULL
+);
+
+-- Table: records
+CREATE TABLE records (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL,
+    operation_type VARCHAR(50) NOT NULL,
+    amount TEXT,
+    user_balance NUMERIC(15, 2),
+    operation_response TEXT,
+    created_at TIMESTAMP NOT NULL,
+    deleted_at TIMESTAMP,
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id)
+);
