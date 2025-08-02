@@ -1,5 +1,6 @@
 package com.fontolan.calculator.entrypoints.controllers.impl;
 
+import com.fontolan.calculator.application.usecases.auth.LoginUseCase;
 import com.fontolan.calculator.entrypoints.controllers.AuthController;
 import com.fontolan.calculator.entrypoints.request.LoginRequest;
 import com.fontolan.calculator.entrypoints.response.JwtResponse;
@@ -11,14 +12,19 @@ import static com.fontolan.calculator.infrastructure.logging.LoggerUtil.getLogge
 
 @RestController
 public class AuthControllerImpl implements AuthController {
-
     private static final Logger log = getLogger(AuthControllerImpl.class);
+    private final LoginUseCase loginUseCase;
+
+    public AuthControllerImpl(LoginUseCase loginUseCase) {
+        this.loginUseCase = loginUseCase;
+    }
 
     @Override
     public ResponseEntity<JwtResponse> login(LoginRequest request) {
         log.info("[Auth] Login attempt for username: {}", request.getUsername());
 
-        String mockToken = "mocked-jwt-token";
-        return ResponseEntity.ok(new JwtResponse(mockToken));
+        JwtResponse response = loginUseCase.execute(request);
+
+        return ResponseEntity.ok(response);
     }
 }
