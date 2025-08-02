@@ -15,7 +15,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -57,11 +57,48 @@ class UserDataProviderImplTest {
         String username = "nonexistent";
         when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
 
-        User result = userDataProvider.findByUsername(username);
+        RuntimeException exception = assertThrows(RuntimeException.class, () ->
+                userDataProvider.findByUsername(username)
+        );
 
-        assertNull(result);
+        assertEquals("User not found: " + username, exception.getMessage());
         verify(userRepository).findByUsername(username);
         verify(userEntityMapper, never()).toDomain(any());
+    }
+
+    @Test
+    void shouldUpdateUserBalanceWhenUserExists() {
+        UUID userId = UUID.randomUUID();
+        BigDecimal newBalance = new BigDecimal("50.00");
+
+        UserEntity existingUser = new UserEntity();
+        existingUser.setId(userId);
+        existingUser.setUsername("test");
+        existingUser.setPassword("pass");
+        existingUser.setStatus(UserStatus.ACTIVE);
+        existingUser.setBalance(BigDecimal.TEN);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
+
+        userDataProvider.updateBalance(userId, newBalance);
+
+        assertEquals(newBalance, existingUser.getBalance());
+        verify(userRepository).save(existingUser);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUserNotFoundOnUpdateBalance() {
+        UUID userId = UUID.randomUUID();
+        BigDecimal newBalance = BigDecimal.ONE;
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () ->
+                userDataProvider.updateBalance(userId, newBalance)
+        );
+
+        assertEquals("User not found by ID: " + userId, exception.getMessage());
+        verify(userRepository, never()).save(any());
     }
 
     private User mockUser() {

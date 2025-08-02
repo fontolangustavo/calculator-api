@@ -1,4 +1,4 @@
-package com.fontolan.calculator.unit.application.usecases.auth;
+package com.fontolan.calculator.unit.entrypoints.controllers;
 
 import com.fontolan.calculator.application.usecases.auth.LoginUseCase;
 import com.fontolan.calculator.entrypoints.controllers.impl.AuthControllerImpl;
