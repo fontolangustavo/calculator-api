@@ -28,4 +28,12 @@ public class User {
 
     public void setBalance(BigDecimal balance) { this.balance = balance; }
     public boolean isActive() { return status == UserStatus.ACTIVE; }
+
+    public void deductBalance(BigDecimal cost) {
+        if (balance.compareTo(cost) < 0) {
+            throw new RuntimeException("Insufficient balance for operation");
+        }
+
+        balance = balance.subtract(cost);
+    }
 }
