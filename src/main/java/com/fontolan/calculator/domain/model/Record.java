@@ -27,14 +27,70 @@ public class Record {
         this.deletedAt = deletedAt;
     }
 
-    public UUID getId() { return id; }
-    public UUID getUserId() { return userId; }
-    public OperationType getOperationType() { return operationType; }
-    public String getAmount() { return amount; }
-    public BigDecimal getUserBalance() { return userBalance; }
-    public String getOperationResponse() { return operationResponse; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public LocalDateTime getDeletedAt() { return deletedAt; }
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
+
+    public OperationType getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(OperationType operationType) {
+        this.operationType = operationType;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public BigDecimal getUserBalance() {
+        return userBalance;
+    }
+
+    public void setUserBalance(BigDecimal userBalance) {
+        this.userBalance = userBalance;
+    }
+
+    public String getOperationResponse() {
+        return operationResponse;
+    }
+
+    public void setOperationResponse(String operationResponse) {
+        this.operationResponse = operationResponse;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
     public boolean isDeleted() { return deletedAt != null; }
     public void markDeleted() { this.deletedAt = LocalDateTime.now(); }
 }

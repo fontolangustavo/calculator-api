@@ -20,4 +20,19 @@ public class RecordEntityMapper {
 
         return entity;
     }
+
+    public Record toDomain(RecordEntity entity) {
+        if (entity == null) return null;
+
+        return new Record(
+                entity.getId(),
+                entity.getUserId(),
+                entity.getOperationType(),
+                entity.getAmount(),
+                entity.getUserBalance(),
+                entity.getOperationResponse(),
+                entity.getCreatedAt(),
+                entity.getDeletedAt()
+        );
+    }
 }

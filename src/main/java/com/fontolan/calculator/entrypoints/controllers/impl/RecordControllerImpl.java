@@ -1,15 +1,16 @@
 package com.fontolan.calculator.entrypoints.controllers.impl;
 
-import com.fontolan.calculator.domain.enums.OperationType;
+import com.fontolan.calculator.application.usecases.record.GetUserRecordsUseCase;
+import com.fontolan.calculator.domain.model.Record;
 import com.fontolan.calculator.entrypoints.controllers.RecordController;
+import com.fontolan.calculator.entrypoints.mapper.RecordMapper;
+import com.fontolan.calculator.entrypoints.request.RecordFilterRequest;
 import com.fontolan.calculator.entrypoints.response.RecordResponse;
 import org.slf4j.Logger;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 import static com.fontolan.calculator.infrastructure.logging.LoggerUtil.getLogger;
@@ -18,20 +19,23 @@ import static com.fontolan.calculator.infrastructure.logging.LoggerUtil.getLogge
 public class RecordControllerImpl implements RecordController {
 
     private static final Logger log = getLogger(RecordControllerImpl.class);
+    private final GetUserRecordsUseCase getUserRecordsUseCase;
+    private final RecordMapper recordMapper;
+
+    public RecordControllerImpl(GetUserRecordsUseCase getUserRecordsUseCase, RecordMapper recordMapper) {
+        this.getUserRecordsUseCase = getUserRecordsUseCase;
+        this.recordMapper = recordMapper;
+    }
 
     @Override
-    public ResponseEntity<List<RecordResponse>> getUserRecords() {
-        log.info("[Record] Fetching mocked record list");
+    public ResponseEntity<Page<RecordResponse>> getUserRecords(RecordFilterRequest request) {
+        // TODO: trocar por authenticated user futuramente
+        String username = "teste";
+        Page<Record> response = getUserRecordsUseCase.execute(request, username);
 
-        RecordResponse mock = new RecordResponse();
-        mock.setId(UUID.randomUUID());
-        mock.setOperationType(OperationType.ADDITION);
-        mock.setAmount("5 + 10");
-        mock.setUserBalance(BigDecimal.valueOf(100));
-        mock.setOperationResponse("15");
-        mock.setCreatedAt(LocalDateTime.now());
+        Page<RecordResponse> responses = response.map(recordMapper::toResponse);
 
-        return ResponseEntity.ok(List.of(mock));
+        return ResponseEntity.ok(responses);
     }
 
     @Override
