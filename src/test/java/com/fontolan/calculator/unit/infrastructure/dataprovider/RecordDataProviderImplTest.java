@@ -11,6 +11,7 @@ import com.fontolan.calculator.infrastructure.dataprovider.repository.UserReposi
 import com.fontolan.calculator.infrastructure.mapper.RecordEntityMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -23,8 +24,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -75,7 +78,7 @@ public class RecordDataProviderImplTest {
         recordEntity.setId(UUID.randomUUID());
 
         Page<RecordEntity> pageEntity = new PageImpl<>(List.of(recordEntity));
-        when(recordRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(pageEntity);
+        when(recordRepository.findAll(ArgumentMatchers.<Specification<RecordEntity>>any(), any(Pageable.class))).thenReturn(pageEntity);
 
         Record record = mockRecord();
         when(recordEntityMapper.toDomain(recordEntity)).thenReturn(record);
@@ -96,6 +99,62 @@ public class RecordDataProviderImplTest {
         org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class, () -> {
             dataProvider.findByUsername(request, username);
         });
+    }
+    @Test
+    void shouldSoftDeleteRecordWhenExists() {
+        UUID recordId = UUID.randomUUID();
+        RecordEntity entity = new RecordEntity();
+        entity.setId(recordId);
+        entity.setDeletedAt(null);
+
+        when(recordRepository.findById(recordId)).thenReturn(Optional.of(entity));
+
+        dataProvider.softDelete(recordId);
+
+        verify(recordRepository).save(argThat(saved ->
+                saved.getId().equals(recordId) &&
+                        saved.getDeletedAt() != null
+        ));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenRecordNotFound() {
+        UUID recordId = UUID.randomUUID();
+        when(recordRepository.findById(recordId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> dataProvider.softDelete(recordId))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Record not found");
+    }
+
+    @Test
+    void shouldReturnRecordWhenEntityExists() {
+        UUID recordId = UUID.randomUUID();
+        RecordEntity entity = new RecordEntity();
+        entity.setId(recordId);
+
+        Record domain = mockRecord();
+        domain.setId(recordId);
+
+        when(recordRepository.findById(recordId)).thenReturn(Optional.of(entity));
+        when(recordEntityMapper.toDomain(entity)).thenReturn(domain);
+
+        Record result = dataProvider.findById(recordId);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(recordId);
+        verify(recordRepository).findById(recordId);
+        verify(recordEntityMapper).toDomain(entity);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenEntityNotFound() {
+        UUID recordId = UUID.randomUUID();
+        when(recordRepository.findById(recordId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> dataProvider.findById(recordId))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Record not found");
     }
 
     private Record mockRecord() {

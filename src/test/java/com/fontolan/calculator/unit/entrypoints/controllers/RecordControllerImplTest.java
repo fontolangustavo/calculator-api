@@ -1,5 +1,6 @@
 package com.fontolan.calculator.unit.entrypoints.controllers;
 
+import com.fontolan.calculator.application.usecases.record.DeleteRecordUseCase;
 import com.fontolan.calculator.application.usecases.record.GetUserRecordsUseCase;
 import com.fontolan.calculator.domain.enums.OperationType;
 import com.fontolan.calculator.domain.model.Record;
@@ -37,6 +38,8 @@ class RecordControllerImplTest {
     @Mock
     private GetUserRecordsUseCase getUserRecordsUseCase;
     @Mock
+    private DeleteRecordUseCase deleteRecordUseCase;
+    @Mock
     private RecordMapper recordMapper;
 
     @Test
@@ -63,6 +66,15 @@ class RecordControllerImplTest {
         assertNotNull(result);
         assertEquals(2, result.getBody().getContent().size());
         verify(getUserRecordsUseCase).execute(any(RecordFilterRequest.class), anyString());
+    }
+
+    @Test
+    void shouldDeleteRecord() {
+        UUID recordId = UUID.randomUUID();
+
+        controller.softDeleteRecord(recordId);
+
+        verify(deleteRecordUseCase).execute(recordId, "teste");
     }
 
     private Record mockRecord() {
