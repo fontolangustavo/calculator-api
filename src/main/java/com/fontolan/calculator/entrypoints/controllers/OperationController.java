@@ -2,6 +2,7 @@ package com.fontolan.calculator.entrypoints.controllers;
 
 import com.fontolan.calculator.entrypoints.request.OperationRequest;
 import com.fontolan.calculator.entrypoints.response.OperationResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface OperationController {
 
     @PostMapping
-    ResponseEntity<OperationResponse> executeOperation(@RequestBody OperationRequest request);
+    ResponseEntity<OperationResponse> executeOperation(@Valid @RequestBody OperationRequest request);
 
     @GetMapping("/types")
     ResponseEntity<?> listAvailableOperations();

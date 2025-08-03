@@ -7,6 +7,7 @@ import com.fontolan.calculator.entrypoints.controllers.RecordController;
 import com.fontolan.calculator.entrypoints.mapper.RecordMapper;
 import com.fontolan.calculator.entrypoints.request.RecordFilterRequest;
 import com.fontolan.calculator.entrypoints.response.RecordResponse;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class RecordControllerImpl implements RecordController {
     }
 
     @Override
-    public ResponseEntity<Page<RecordResponse>> getUserRecords(RecordFilterRequest request) {
+    public ResponseEntity<Page<RecordResponse>> getUserRecords(@Valid RecordFilterRequest request) {
         // TODO: trocar por authenticated user futuramente
         String username = "teste";
         Page<Record> response = getUserRecordsUseCase.execute(request, username);

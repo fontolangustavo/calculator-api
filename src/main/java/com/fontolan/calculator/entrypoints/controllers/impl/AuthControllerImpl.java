@@ -4,6 +4,7 @@ import com.fontolan.calculator.application.usecases.auth.LoginUseCase;
 import com.fontolan.calculator.entrypoints.controllers.AuthController;
 import com.fontolan.calculator.entrypoints.request.LoginRequest;
 import com.fontolan.calculator.entrypoints.response.JwtResponse;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,7 @@ public class AuthControllerImpl implements AuthController {
     }
 
     @Override
-    public ResponseEntity<JwtResponse> login(LoginRequest request) {
+    public ResponseEntity<JwtResponse> login(@Valid LoginRequest request) {
         log.info("[Auth] Login attempt for username: {}", request.getUsername());
 
         JwtResponse response = loginUseCase.execute(request);

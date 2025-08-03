@@ -5,6 +5,7 @@ import com.fontolan.calculator.domain.enums.OperationType;
 import com.fontolan.calculator.entrypoints.controllers.OperationController;
 import com.fontolan.calculator.entrypoints.request.OperationRequest;
 import com.fontolan.calculator.entrypoints.response.OperationResponse;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +23,7 @@ public class OperationControllerImpl implements OperationController {
     }
 
     @Override
-    public ResponseEntity<OperationResponse> executeOperation(OperationRequest request) {
+    public ResponseEntity<OperationResponse> executeOperation(@Valid OperationRequest request) {
         log.info("[Operation] Executing operation of type: {} with operands: {}", request.getType(), request.getOperands());
 
         OperationResponse response = performOperationUseCase.execute(request, "teste");
