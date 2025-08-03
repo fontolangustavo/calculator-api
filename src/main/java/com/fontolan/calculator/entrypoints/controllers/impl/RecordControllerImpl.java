@@ -1,5 +1,6 @@
 package com.fontolan.calculator.entrypoints.controllers.impl;
 
+import com.fontolan.calculator.application.usecases.record.DeleteRecordUseCase;
 import com.fontolan.calculator.application.usecases.record.GetUserRecordsUseCase;
 import com.fontolan.calculator.domain.model.Record;
 import com.fontolan.calculator.entrypoints.controllers.RecordController;
@@ -20,10 +21,12 @@ public class RecordControllerImpl implements RecordController {
 
     private static final Logger log = getLogger(RecordControllerImpl.class);
     private final GetUserRecordsUseCase getUserRecordsUseCase;
+    private final DeleteRecordUseCase deleteRecordUseCase;
     private final RecordMapper recordMapper;
 
-    public RecordControllerImpl(GetUserRecordsUseCase getUserRecordsUseCase, RecordMapper recordMapper) {
+    public RecordControllerImpl(GetUserRecordsUseCase getUserRecordsUseCase, DeleteRecordUseCase deleteRecordUseCase, RecordMapper recordMapper) {
         this.getUserRecordsUseCase = getUserRecordsUseCase;
+        this.deleteRecordUseCase = deleteRecordUseCase;
         this.recordMapper = recordMapper;
     }
 
@@ -41,6 +44,12 @@ public class RecordControllerImpl implements RecordController {
     @Override
     public ResponseEntity<Void> softDeleteRecord(UUID id) {
         log.warn("[Record] Soft deleting mocked record with id: {}", id);
+
+        // TODO: trocar por authenticated user futuramente
+        String username = "teste";
+
+        deleteRecordUseCase.execute(id, username);
+
         return ResponseEntity.noContent().build();
     }
 }

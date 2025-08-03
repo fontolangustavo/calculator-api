@@ -38,6 +38,15 @@ public class RecordDataProviderImpl implements RecordDataProvider {
     }
 
     @Override
+    public void softDelete(UUID id) {
+        var entity = recordRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Record not found: " + id));
+
+        entity.setDeletedAt(LocalDateTime.now());
+        recordRepository.save(entity);
+    }
+
+    @Override
     public Page<Record> findByUsername(RecordFilterRequest request, String username) {
         var user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -58,6 +67,14 @@ public class RecordDataProviderImpl implements RecordDataProvider {
 
         return recordRepository.findAll(spec, pageable)
                 .map(recordEntityMapper::toDomain);
+    }
+
+    @Override
+    public Record findById(UUID id) {
+        var entity = recordRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Record not found: " + id));
+
+        return recordEntityMapper.toDomain(entity);
     }
 
     private Specification<RecordEntity> byUser(UUID userId) {
