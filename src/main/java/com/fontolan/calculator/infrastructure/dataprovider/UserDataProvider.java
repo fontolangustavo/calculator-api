@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public interface UserDataProvider {
+    User save(User user);
     User findByUsername(String username);
     void updateBalance(UUID userId, BigDecimal newBalance);
 }

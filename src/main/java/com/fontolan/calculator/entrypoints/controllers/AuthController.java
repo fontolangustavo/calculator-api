@@ -1,7 +1,9 @@
 package com.fontolan.calculator.entrypoints.controllers;
 
 import com.fontolan.calculator.entrypoints.request.LoginRequest;
+import com.fontolan.calculator.entrypoints.request.RegisterRequest;
 import com.fontolan.calculator.entrypoints.response.JwtResponse;
+import com.fontolan.calculator.entrypoints.response.UserResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,4 +15,7 @@ public interface AuthController {
 
     @PostMapping("/login")
     ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginRequest request);
+
+    @PostMapping("/register")
+    ResponseEntity<UserResponse> register(@RequestBody @Valid RegisterRequest request);
 }

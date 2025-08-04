@@ -4,6 +4,7 @@ package com.fontolan.calculator.infrastructure.dataprovider.impl;
 import com.fontolan.calculator.domain.exception.NotFoundException;
 import com.fontolan.calculator.domain.model.User;
 import com.fontolan.calculator.infrastructure.dataprovider.UserDataProvider;
+import com.fontolan.calculator.infrastructure.dataprovider.entity.UserEntity;
 import com.fontolan.calculator.infrastructure.dataprovider.repository.UserRepository;
 import com.fontolan.calculator.infrastructure.mapper.UserEntityMapper;
 import org.springframework.stereotype.Component;
@@ -23,10 +24,18 @@ public class UserDataProviderImpl implements UserDataProvider {
     }
 
     @Override
+    public User save(User user) {
+        UserEntity entity = userEntityMapper.toEntity(user);
+        UserEntity savedEntity = userRepository.save(entity);
+
+        return userEntityMapper.toDomain(savedEntity);
+    }
+
+    @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .map(userEntityMapper::toDomain)
-                .orElseThrow(() -> new NotFoundException("User not found: " + username));
+                .orElse(null);
     }
 
     @Override
