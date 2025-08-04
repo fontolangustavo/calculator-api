@@ -1,6 +1,7 @@
 package com.fontolan.calculator.infrastructure.dataprovider.impl;
 
 
+import com.fontolan.calculator.domain.exception.NotFoundException;
 import com.fontolan.calculator.domain.model.User;
 import com.fontolan.calculator.infrastructure.dataprovider.UserDataProvider;
 import com.fontolan.calculator.infrastructure.dataprovider.repository.UserRepository;
@@ -25,13 +26,13 @@ public class UserDataProviderImpl implements UserDataProvider {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .map(userEntityMapper::toDomain)
-                .orElseThrow(() -> new RuntimeException("User not found: " + username));
+                .orElseThrow(() -> new NotFoundException("User not found: " + username));
     }
 
     @Override
     public void updateBalance(UUID userId, BigDecimal newBalance) {
         var entity = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found by ID: " + userId));
+                .orElseThrow(() -> new NotFoundException("User not found by ID: " + userId));
 
         entity.setBalance(newBalance);
 

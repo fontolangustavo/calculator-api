@@ -1,6 +1,7 @@
 package com.fontolan.calculator.infrastructure.dataprovider.impl;
 
 import com.fontolan.calculator.domain.enums.OperationType;
+import com.fontolan.calculator.domain.exception.NotFoundException;
 import com.fontolan.calculator.domain.model.Record;
 import com.fontolan.calculator.entrypoints.request.RecordFilterRequest;
 import com.fontolan.calculator.infrastructure.dataprovider.RecordDataProvider;
@@ -40,7 +41,7 @@ public class RecordDataProviderImpl implements RecordDataProvider {
     @Override
     public void softDelete(UUID id) {
         var entity = recordRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Record not found: " + id));
+                .orElseThrow(() -> new NotFoundException("Record not found: " + id));
 
         entity.setDeletedAt(LocalDateTime.now());
         recordRepository.save(entity);
@@ -49,7 +50,7 @@ public class RecordDataProviderImpl implements RecordDataProvider {
     @Override
     public Page<Record> findByUsername(RecordFilterRequest request, String username) {
         var user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         Pageable pageable = PageRequest.of(
                 request.getPage(),
@@ -72,7 +73,7 @@ public class RecordDataProviderImpl implements RecordDataProvider {
     @Override
     public Record findById(UUID id) {
         var entity = recordRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Record not found: " + id));
+                .orElseThrow(() -> new NotFoundException("Record not found: " + id));
 
         return recordEntityMapper.toDomain(entity);
     }

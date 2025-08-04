@@ -1,6 +1,7 @@
 package com.fontolan.calculator.domain.model;
 
 import com.fontolan.calculator.domain.enums.UserStatus;
+import com.fontolan.calculator.domain.exception.BusinessException;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -31,7 +32,7 @@ public class User {
 
     public void deductBalance(BigDecimal cost) {
         if (balance.compareTo(cost) < 0) {
-            throw new RuntimeException("Insufficient balance for operation");
+            throw new BusinessException("Insufficient balance for operation");
         }
 
         balance = balance.subtract(cost);

@@ -1,6 +1,7 @@
 package com.fontolan.calculator.application.usecases.auth.impl;
 
 import com.fontolan.calculator.application.usecases.auth.LoginUseCase;
+import com.fontolan.calculator.domain.exception.InvalidCredentialsException;
 import com.fontolan.calculator.domain.model.User;
 import com.fontolan.calculator.entrypoints.request.LoginRequest;
 import com.fontolan.calculator.entrypoints.response.JwtResponse;
@@ -21,7 +22,7 @@ public class LoginUseCaseImpl implements LoginUseCase {
         User user = userDataProvider.findByUsername(request.getUsername());
 
         if (user == null || !user.getPassword().equals(request.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+            throw new InvalidCredentialsException();
         }
 
         String token = "mocked-jwt-token";

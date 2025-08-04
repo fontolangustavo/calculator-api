@@ -1,6 +1,7 @@
 package com.fontolan.calculator.application.usecases.record.impl;
 
 import com.fontolan.calculator.application.usecases.record.DeleteRecordUseCase;
+import com.fontolan.calculator.domain.exception.BusinessException;
 import com.fontolan.calculator.domain.model.Record;
 import com.fontolan.calculator.domain.model.User;
 import com.fontolan.calculator.infrastructure.dataprovider.RecordDataProvider;
@@ -26,7 +27,7 @@ public class DeleteRecordUseCaseImpl implements DeleteRecordUseCase {
         Record record = recordDataProvider.findById(recordId);
 
         if (!record.getUserId().equals(user.getId())) {
-            throw new RuntimeException("Record does not belong to the user.");
+            throw new BusinessException("Record does not belong to the user.");
         }
 
         recordDataProvider.softDelete(recordId);
