@@ -2,6 +2,7 @@ package com.fontolan.calculator.integration.stepdefs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fontolan.calculator.entrypoints.request.LoginRequest;
+import com.fontolan.calculator.entrypoints.request.RegisterRequest;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -34,6 +35,16 @@ public class LoginSteps {
     public void a_user_with_credentials(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    @When("the register a client with POSTs to {string} and response status should be {int}")
+    public void the_register_client_posts_to(String endpoint, int status) throws Exception {
+        RegisterRequest request = new RegisterRequest(username, password);
+        var responseRegister = mockMvc.perform(MockMvcRequestBuilders.post(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)));
+
+        responseRegister.andExpect(status().is(status));
     }
 
     @When("the client POSTs to {string}")

@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
@@ -58,11 +59,9 @@ class UserDataProviderImplTest {
         String username = "nonexistent";
         when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
 
-        NotFoundException exception = assertThrows(NotFoundException.class, () ->
-                userDataProvider.findByUsername(username)
-        );
+        User user = userDataProvider.findByUsername(username);
 
-        assertEquals("User not found: " + username, exception.getMessage());
+        assertNull(user);
         verify(userRepository).findByUsername(username);
         verify(userEntityMapper, never()).toDomain(any());
     }
