@@ -1,6 +1,7 @@
 package com.fontolan.calculator.unit.infrastructure.dataprovider;
 
 import com.fontolan.calculator.domain.enums.OperationType;
+import com.fontolan.calculator.domain.exception.NotFoundException;
 import com.fontolan.calculator.domain.model.Record;
 import com.fontolan.calculator.entrypoints.request.RecordFilterRequest;
 import com.fontolan.calculator.infrastructure.dataprovider.entity.RecordEntity;
@@ -26,6 +27,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
@@ -96,7 +98,7 @@ public class RecordDataProviderImplTest {
 
         when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
 
-        org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             dataProvider.findByUsername(request, username);
         });
     }
@@ -123,7 +125,7 @@ public class RecordDataProviderImplTest {
         when(recordRepository.findById(recordId)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> dataProvider.softDelete(recordId))
-                .isInstanceOf(RuntimeException.class)
+                .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Record not found");
     }
 
@@ -153,7 +155,7 @@ public class RecordDataProviderImplTest {
         when(recordRepository.findById(recordId)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> dataProvider.findById(recordId))
-                .isInstanceOf(RuntimeException.class)
+                .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Record not found");
     }
 

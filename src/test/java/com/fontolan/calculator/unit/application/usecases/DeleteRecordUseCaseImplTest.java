@@ -3,6 +3,8 @@ package com.fontolan.calculator.unit.application.usecases;
 import com.fontolan.calculator.application.usecases.record.impl.DeleteRecordUseCaseImpl;
 import com.fontolan.calculator.domain.enums.OperationType;
 import com.fontolan.calculator.domain.enums.UserStatus;
+import com.fontolan.calculator.domain.exception.BusinessException;
+import com.fontolan.calculator.domain.exception.NotFoundException;
 import com.fontolan.calculator.domain.model.Record;
 import com.fontolan.calculator.domain.model.User;
 import com.fontolan.calculator.infrastructure.dataprovider.RecordDataProvider;
@@ -66,10 +68,10 @@ class DeleteRecordUseCaseImplTest {
     @Test
     void shouldThrowExceptionIfRecordNotFound() {
         when(userDataProvider.findByUsername(anyString())).thenReturn(mockUser());
-        when(recordDataProvider.findById(recordId)).thenThrow(new RuntimeException("Record not found: " + recordId));
+        when(recordDataProvider.findById(recordId)).thenThrow(new NotFoundException("Record not found: " + recordId));
 
         assertThatThrownBy(() -> useCase.execute(recordId, anyString()))
-                .isInstanceOf(RuntimeException.class)
+                .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Record not found");
     }
 
@@ -83,7 +85,7 @@ class DeleteRecordUseCaseImplTest {
         when(recordDataProvider.findById(recordId)).thenReturn(record);
 
         assertThatThrownBy(() -> useCase.execute(recordId, anyString()))
-                .isInstanceOf(RuntimeException.class)
+                .isInstanceOf(BusinessException.class)
                 .hasMessageContaining("Record does not belong to the user.");
     }
 

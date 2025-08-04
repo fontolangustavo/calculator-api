@@ -2,6 +2,7 @@ package com.fontolan.calculator.unit.application.usecases;
 
 import com.fontolan.calculator.application.usecases.auth.impl.LoginUseCaseImpl;
 import com.fontolan.calculator.domain.enums.UserStatus;
+import com.fontolan.calculator.domain.exception.InvalidCredentialsException;
 import com.fontolan.calculator.domain.model.User;
 import com.fontolan.calculator.entrypoints.request.LoginRequest;
 import com.fontolan.calculator.entrypoints.response.JwtResponse;
@@ -56,7 +57,7 @@ class LoginUseCaseImplTest {
 
         when(userDataProvider.findByUsername("invalidUser")).thenReturn(null);
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+        InvalidCredentialsException exception = assertThrows(InvalidCredentialsException.class, () -> {
             loginUseCase.execute(request);
         });
 
@@ -73,7 +74,7 @@ class LoginUseCaseImplTest {
 
         when(userDataProvider.findByUsername("user1")).thenReturn(user);
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+        InvalidCredentialsException exception = assertThrows(InvalidCredentialsException.class, () -> {
             loginUseCase.execute(request);
         });
 

@@ -1,6 +1,7 @@
 package com.fontolan.calculator.unit.infrastructure.dataprovider;
 
 import com.fontolan.calculator.domain.enums.UserStatus;
+import com.fontolan.calculator.domain.exception.NotFoundException;
 import com.fontolan.calculator.domain.model.User;
 import com.fontolan.calculator.infrastructure.dataprovider.entity.UserEntity;
 import com.fontolan.calculator.infrastructure.dataprovider.impl.UserDataProviderImpl;
@@ -57,7 +58,7 @@ class UserDataProviderImplTest {
         String username = "nonexistent";
         when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () ->
+        NotFoundException exception = assertThrows(NotFoundException.class, () ->
                 userDataProvider.findByUsername(username)
         );
 
@@ -93,7 +94,7 @@ class UserDataProviderImplTest {
 
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () ->
+        NotFoundException exception = assertThrows(NotFoundException.class, () ->
                 userDataProvider.updateBalance(userId, newBalance)
         );
 

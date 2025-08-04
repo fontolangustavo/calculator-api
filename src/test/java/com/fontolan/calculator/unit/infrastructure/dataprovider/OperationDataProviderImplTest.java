@@ -1,6 +1,7 @@
 package com.fontolan.calculator.unit.infrastructure.dataprovider;
 
 import com.fontolan.calculator.domain.enums.OperationType;
+import com.fontolan.calculator.domain.exception.NotFoundException;
 import com.fontolan.calculator.domain.model.Operation;
 import com.fontolan.calculator.infrastructure.dataprovider.entity.OperationEntity;
 import com.fontolan.calculator.infrastructure.dataprovider.impl.OperationDataProviderImpl;
@@ -53,7 +54,7 @@ public class OperationDataProviderImplTest {
 
         when(operationRepository.findByType(type)).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
             dataProvider.findByType(type);
         });
 

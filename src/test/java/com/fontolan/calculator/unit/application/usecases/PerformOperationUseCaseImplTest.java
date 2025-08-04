@@ -3,6 +3,8 @@ package com.fontolan.calculator.unit.application.usecases;
 import com.fontolan.calculator.application.usecases.operation.impl.PerformOperationUseCaseImpl;
 import com.fontolan.calculator.domain.enums.OperationType;
 import com.fontolan.calculator.domain.enums.UserStatus;
+import com.fontolan.calculator.domain.exception.BusinessException;
+import com.fontolan.calculator.domain.exception.NotFoundException;
 import com.fontolan.calculator.domain.model.Operation;
 import com.fontolan.calculator.domain.model.Record;
 import com.fontolan.calculator.domain.model.User;
@@ -78,9 +80,9 @@ class PerformOperationUseCaseImplTest {
     void shouldThrowExceptionWhenUserNotFound() {
         OperationRequest request = new OperationRequest(OperationType.ADDITION, List.of(BigDecimal.ONE, BigDecimal.ONE));
 
-        when(userDataProvider.findByUsername(anyString())).thenThrow(new RuntimeException("User not found: MOCK_NAME"));
+        when(userDataProvider.findByUsername(anyString())).thenThrow(new NotFoundException("User not found: MOCK_NAME"));
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
             useCase.execute(request, "MOCK_NAME");
         });
 
@@ -95,9 +97,9 @@ class PerformOperationUseCaseImplTest {
         User user = new User(userId, "MOCK_NAME", "pass", UserStatus.ACTIVE, BigDecimal.TEN);
 
         when(userDataProvider.findByUsername(anyString())).thenReturn(user);
-        when(operationDataProvider.findByType(type)).thenThrow(new RuntimeException("Operation not found for type: " + type));
+        when(operationDataProvider.findByType(type)).thenThrow(new NotFoundException("Operation not found for type: " + type));
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
             useCase.execute(request, "MOCK_NAME");
         });
 
@@ -115,7 +117,7 @@ class PerformOperationUseCaseImplTest {
         when(userDataProvider.findByUsername(anyString())).thenReturn(user);
         when(operationDataProvider.findByType(type)).thenReturn(operation);
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+        BusinessException exception = assertThrows(BusinessException.class, () -> {
             useCase.execute(request, user.getUsername());
         });
 
