@@ -23,7 +23,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class OperationEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
