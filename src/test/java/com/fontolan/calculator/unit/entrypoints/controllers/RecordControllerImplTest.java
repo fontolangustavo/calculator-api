@@ -61,7 +61,7 @@ class RecordControllerImplTest {
         when(getUserRecordsUseCase.execute(any(RecordFilterRequest.class), anyString()))
                 .thenReturn(page);
 
-        ResponseEntity<Page<RecordResponse>> result = controller.getUserRecords(request);
+        ResponseEntity<Page<RecordResponse>> result = controller.getUserRecords("MOCK_USERNAME", request);
 
         assertNotNull(result);
         assertEquals(2, result.getBody().getContent().size());
@@ -72,9 +72,9 @@ class RecordControllerImplTest {
     void shouldDeleteRecord() {
         UUID recordId = UUID.randomUUID();
 
-        controller.softDeleteRecord(recordId);
+        controller.softDeleteRecord("MOCK_USERNAME", recordId);
 
-        verify(deleteRecordUseCase).execute(recordId, "teste");
+        verify(deleteRecordUseCase).execute(recordId, "MOCK_USERNAME");
     }
 
     private Record mockRecord() {
