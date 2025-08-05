@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.fontolan.calculator.infrastructure.logging.LoggerUtil.getLogger;
@@ -32,10 +33,13 @@ public class OperationControllerImpl implements OperationController {
     }
 
     @Override
-    public ResponseEntity<OperationResponse> executeOperation(@Valid OperationRequest request) {
+    public ResponseEntity<OperationResponse> executeOperation(
+            @AuthenticationPrincipal String username,
+            @Valid OperationRequest request
+    ) {
         log.info("[Operation] Executing operation of type: {} with operands: {}", request.getType(), request.getOperands());
 
-        OperationResponse response = performOperationUseCase.execute(request, "teste");
+        OperationResponse response = performOperationUseCase.execute(request, username);
 
         return ResponseEntity.ok(response);
     }

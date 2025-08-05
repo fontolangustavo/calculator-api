@@ -7,6 +7,7 @@ import com.fontolan.calculator.entrypoints.response.OperationTypeResponse;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface OperationController {
 
     @PostMapping
-    ResponseEntity<OperationResponse> executeOperation(@Valid @RequestBody OperationRequest request);
+    ResponseEntity<OperationResponse> executeOperation(@AuthenticationPrincipal String username,
+                                                       @Valid @RequestBody OperationRequest request
+    );
 
     @GetMapping("/types")
     ResponseEntity<Page<OperationTypeResponse>> listAvailableOperations(@Valid OperationFilterRequest request);
