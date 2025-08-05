@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
@@ -32,9 +33,10 @@ public class RecordControllerImpl implements RecordController {
     }
 
     @Override
-    public ResponseEntity<Page<RecordResponse>> getUserRecords(@Valid RecordFilterRequest request) {
-        // TODO: trocar por authenticated user futuramente
-        String username = "teste";
+    public ResponseEntity<Page<RecordResponse>> getUserRecords(
+            @AuthenticationPrincipal String username,
+            @Valid RecordFilterRequest request
+    ) {
         Page<Record> response = getUserRecordsUseCase.execute(request, username);
 
         Page<RecordResponse> responses = response.map(recordMapper::toResponse);
@@ -43,11 +45,11 @@ public class RecordControllerImpl implements RecordController {
     }
 
     @Override
-    public ResponseEntity<Void> softDeleteRecord(UUID id) {
+    public ResponseEntity<Void> softDeleteRecord(
+            @AuthenticationPrincipal String username,
+            UUID id
+    ) {
         log.warn("[Record] Soft deleting mocked record with id: {}", id);
-
-        // TODO: trocar por authenticated user futuramente
-        String username = "teste";
 
         deleteRecordUseCase.execute(id, username);
 
