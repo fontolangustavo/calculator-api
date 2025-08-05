@@ -1,4 +1,4 @@
-package com.fontolan.calculator.integration.stepdefs;
+package com.fontolan.calculator.integration.config;
 
 
 import io.cucumber.spring.CucumberContextConfiguration;

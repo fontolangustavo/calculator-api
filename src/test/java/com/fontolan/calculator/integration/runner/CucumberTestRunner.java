@@ -11,6 +11,6 @@ import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
 @Suite
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
-@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.fontolan.calculator.integration.stepdefs")
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.fontolan.calculator.integration.config, com.fontolan.calculator.integration.steps")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
 public class CucumberTestRunner {}

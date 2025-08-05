@@ -1,4 +1,4 @@
-package com.fontolan.calculator.integration.stepdefs;
+package com.fontolan.calculator.integration.steps;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fontolan.calculator.entrypoints.request.LoginRequest;
