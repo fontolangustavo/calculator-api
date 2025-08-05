@@ -61,7 +61,7 @@ class OperationControllerImplTest {
 
         when(performOperationUseCase.execute(any(OperationRequest.class), anyString())).thenReturn(mockedResponse);
 
-        ResponseEntity<OperationResponse> response = controller.executeOperation(request);
+        ResponseEntity<OperationResponse> response = controller.executeOperation("MOCK_USERNAME", request);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mockedResponse, response.getBody());
