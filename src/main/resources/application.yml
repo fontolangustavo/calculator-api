@@ -13,9 +13,9 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
   api-docs:
-    enabled: ${SWAGGER_ENABLED:true}
+    enabled: ${SWAGGER_ENABLED:false}
   swagger-ui:
-    enabled: ${SWAGGER_ENABLED:true}
+    enabled: ${SWAGGER_ENABLED:false}
 security:
   jwt:
     secret: ${JWT_SECRET}
