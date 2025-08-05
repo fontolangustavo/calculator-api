@@ -1,8 +1,11 @@
 package com.fontolan.calculator.entrypoints.controllers;
 
+import com.fontolan.calculator.entrypoints.request.OperationFilterRequest;
 import com.fontolan.calculator.entrypoints.request.OperationRequest;
 import com.fontolan.calculator.entrypoints.response.OperationResponse;
+import com.fontolan.calculator.entrypoints.response.OperationTypeResponse;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,5 +19,5 @@ public interface OperationController {
     ResponseEntity<OperationResponse> executeOperation(@Valid @RequestBody OperationRequest request);
 
     @GetMapping("/types")
-    ResponseEntity<?> listAvailableOperations();
+    ResponseEntity<Page<OperationTypeResponse>> listAvailableOperations(@Valid OperationFilterRequest request);
 }
