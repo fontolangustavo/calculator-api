@@ -7,8 +7,10 @@ import com.fontolan.calculator.domain.model.User;
 import com.fontolan.calculator.entrypoints.request.LoginRequest;
 import com.fontolan.calculator.entrypoints.response.JwtResponse;
 import com.fontolan.calculator.infrastructure.dataprovider.UserDataProvider;
+import com.fontolan.calculator.infrastructure.dataprovider.security.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -16,6 +18,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -24,12 +27,16 @@ import static org.mockito.Mockito.when;
 class LoginUseCaseImplTest {
 
     private UserDataProvider userDataProvider;
+    private PasswordEncoder passwordEncoder;
+    private JwtUtil jwtUtil;
     private LoginUseCaseImpl loginUseCase;
 
     @BeforeEach
     void setUp() {
         userDataProvider = mock(UserDataProvider.class);
-        loginUseCase = new LoginUseCaseImpl(userDataProvider);
+        passwordEncoder = mock(PasswordEncoder.class);
+        jwtUtil = mock(JwtUtil.class);
+        loginUseCase = new LoginUseCaseImpl(userDataProvider, passwordEncoder, jwtUtil);
     }
 
     @Test
@@ -41,6 +48,8 @@ class LoginUseCaseImplTest {
         User user = mockUser();
 
         when(userDataProvider.findByUsername("user1")).thenReturn(user);
+        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
+        when(jwtUtil.generateToken(anyString())).thenReturn("mocked-jwt-token");
 
         JwtResponse response = loginUseCase.execute(request);
 
