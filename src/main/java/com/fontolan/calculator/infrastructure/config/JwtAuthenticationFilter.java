@@ -1,5 +1,6 @@
 package com.fontolan.calculator.infrastructure.config;
 
+import com.fontolan.calculator.domain.enums.UserStatus;
 import com.fontolan.calculator.infrastructure.dataprovider.repository.UserRepository;
 import com.fontolan.calculator.infrastructure.dataprovider.security.JwtUtil;
 import jakarta.servlet.FilterChain;
@@ -43,8 +44,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String username = jwtUtil.extractUsername(token);
-        var userOpt = userRepository.findByUsername(username);
-        if (userOpt.isEmpty()) {
+        var user = userRepository.findByUsername(username);
+        if (user.isEmpty() || user.get().getStatus() == UserStatus.INACTIVE) {
             chain.doFilter(request, response);
             return;
         }
