@@ -6,6 +6,8 @@ import com.fontolan.calculator.entrypoints.response.JwtResponse;
 import com.fontolan.calculator.entrypoints.response.UserResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,4 +20,9 @@ public interface AuthController {
 
     @PostMapping("/register")
     ResponseEntity<UserResponse> register(@RequestBody @Valid RegisterRequest request);
+
+    @GetMapping("/me")
+    ResponseEntity<UserResponse> me(
+            @AuthenticationPrincipal String username
+    );
 }

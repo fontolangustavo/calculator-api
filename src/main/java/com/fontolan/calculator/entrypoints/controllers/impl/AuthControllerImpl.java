@@ -1,5 +1,6 @@
 package com.fontolan.calculator.entrypoints.controllers.impl;
 
+import com.fontolan.calculator.application.usecases.auth.GetUserUseCase;
 import com.fontolan.calculator.application.usecases.auth.LoginUseCase;
 import com.fontolan.calculator.application.usecases.auth.RegisterUseCase;
 import com.fontolan.calculator.domain.model.User;
@@ -21,11 +22,13 @@ public class AuthControllerImpl implements AuthController {
     private static final Logger log = getLogger(AuthControllerImpl.class);
     private final LoginUseCase loginUseCase;
     private final RegisterUseCase registerUseCase;
+    private final GetUserUseCase getUserUseCase;
     private final UserMapper userMapper;
 
-    public AuthControllerImpl(LoginUseCase loginUseCase, RegisterUseCase registerUseCase, UserMapper userMapper) {
+    public AuthControllerImpl(LoginUseCase loginUseCase, RegisterUseCase registerUseCase, GetUserUseCase getUserUseCase, UserMapper userMapper) {
         this.loginUseCase = loginUseCase;
         this.registerUseCase = registerUseCase;
+        this.getUserUseCase = getUserUseCase;
         this.userMapper = userMapper;
     }
 
@@ -46,5 +49,14 @@ public class AuthControllerImpl implements AuthController {
         UserResponse response = userMapper.toResponse(user);
 
         return ResponseEntity.accepted().body(response);
+    }
+
+    @Override
+    public ResponseEntity<UserResponse> me(String username) {
+        User user = getUserUseCase.execute(username);
+
+        UserResponse response = userMapper.toResponse(user);
+
+        return ResponseEntity.ok(response);
     }
 }
