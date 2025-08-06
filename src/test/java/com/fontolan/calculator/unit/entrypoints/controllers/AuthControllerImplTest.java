@@ -4,6 +4,7 @@ import com.fontolan.calculator.application.usecases.auth.LoginUseCase;
 import com.fontolan.calculator.entrypoints.controllers.impl.AuthControllerImpl;
 import com.fontolan.calculator.entrypoints.request.LoginRequest;
 import com.fontolan.calculator.entrypoints.response.JwtResponse;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -36,14 +37,15 @@ public class AuthControllerImplTest {
         request.setUsername("testuser");
         request.setPassword("testpass");
 
-        JwtResponse expectedResponse = new JwtResponse("token123");
+        JwtResponse expectedResponse = new JwtResponse("mock-jwt-token");
 
-        when(loginUseCase.execute(request)).thenReturn(expectedResponse);
+        when(loginUseCase.execute(request)).thenReturn("mock-jwt-token");
 
         ResponseEntity<JwtResponse> response = authController.login(request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo(expectedResponse);
+        Assertions.assertNotNull(response.getBody());
+        assertThat(response.getBody().getToken()).isEqualTo(expectedResponse.getToken());
         verify(loginUseCase, times(1)).execute(request);
     }
 }

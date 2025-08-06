@@ -5,7 +5,6 @@ import com.fontolan.calculator.domain.enums.UserStatus;
 import com.fontolan.calculator.domain.exception.InvalidCredentialsException;
 import com.fontolan.calculator.domain.model.User;
 import com.fontolan.calculator.entrypoints.request.LoginRequest;
-import com.fontolan.calculator.entrypoints.response.JwtResponse;
 import com.fontolan.calculator.infrastructure.dataprovider.UserDataProvider;
 import com.fontolan.calculator.infrastructure.dataprovider.security.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,10 +50,10 @@ class LoginUseCaseImplTest {
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
         when(jwtUtil.generateToken(anyString())).thenReturn("mocked-jwt-token");
 
-        JwtResponse response = loginUseCase.execute(request);
+        String token = loginUseCase.execute(request);
 
-        assertNotNull(response);
-        assertEquals("mocked-jwt-token", response.getToken());
+        assertNotNull(token);
+        assertEquals("mocked-jwt-token", token);
         verify(userDataProvider, times(1)).findByUsername("user1");
     }
 
