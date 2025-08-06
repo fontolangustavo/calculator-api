@@ -9,6 +9,7 @@ import com.fontolan.calculator.entrypoints.mapper.UserMapper;
 import com.fontolan.calculator.entrypoints.request.LoginRequest;
 import com.fontolan.calculator.entrypoints.request.RegisterRequest;
 import com.fontolan.calculator.entrypoints.response.JwtResponse;
+import com.fontolan.calculator.entrypoints.response.RegisterResponse;
 import com.fontolan.calculator.entrypoints.response.UserResponse;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -36,17 +37,21 @@ public class AuthControllerImpl implements AuthController {
     public ResponseEntity<JwtResponse> login(@Valid LoginRequest request) {
         log.info("[Auth] Login attempt for username: {}", request.getUsername());
 
-        JwtResponse response = loginUseCase.execute(request);
+        String token = loginUseCase.execute(request);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new JwtResponse(token));
     }
 
     @Override
-    public ResponseEntity<UserResponse> register(RegisterRequest request) {
+    public ResponseEntity<RegisterResponse> register(RegisterRequest request) {
         log.info("[Auth] Register new user with username: {}", request.getUsername());
         User user = registerUseCase.execute(request);
 
-        UserResponse response = userMapper.toResponse(user);
+        UserResponse userResponse = userMapper.toResponse(user);
+
+        String token = loginUseCase.execute(new LoginRequest(request.getUsername(), request.getPassword()));
+
+        RegisterResponse response = new RegisterResponse(token, userResponse);
 
         return ResponseEntity.accepted().body(response);
     }

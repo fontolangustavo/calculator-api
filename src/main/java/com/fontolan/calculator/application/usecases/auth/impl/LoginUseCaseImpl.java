@@ -4,7 +4,6 @@ import com.fontolan.calculator.application.usecases.auth.LoginUseCase;
 import com.fontolan.calculator.domain.exception.InvalidCredentialsException;
 import com.fontolan.calculator.domain.model.User;
 import com.fontolan.calculator.entrypoints.request.LoginRequest;
-import com.fontolan.calculator.entrypoints.response.JwtResponse;
 import com.fontolan.calculator.infrastructure.dataprovider.UserDataProvider;
 import com.fontolan.calculator.infrastructure.dataprovider.security.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,15 +23,13 @@ public class LoginUseCaseImpl implements LoginUseCase {
     }
 
     @Override
-    public JwtResponse execute(LoginRequest request) {
+    public String execute(LoginRequest request) {
         User user = userDataProvider.findByUsername(request.getUsername());
 
         if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new InvalidCredentialsException();
         }
 
-        String token = jwtUtil.generateToken(user.getUsername());
-
-        return new JwtResponse(token);
+        return jwtUtil.generateToken(user.getUsername());
     }
 }
