@@ -20,11 +20,13 @@ public class PerformOperationUseCaseImpl implements PerformOperationUseCase {
     private final UserDataProvider userDataProvider;
     private final OperationDataProvider operationDataProvider;
     private final RecordDataProvider recordDataProvider;
+    private final OperationHandlerRegistry operationHandlerRegistry;
 
-    public PerformOperationUseCaseImpl(UserDataProvider userDataProvider, OperationDataProvider operationDataProvider, RecordDataProvider recordDataProvider) {
+    public PerformOperationUseCaseImpl(UserDataProvider userDataProvider, OperationDataProvider operationDataProvider, RecordDataProvider recordDataProvider, OperationHandlerRegistry operationHandlerRegistry) {
         this.userDataProvider = userDataProvider;
         this.operationDataProvider = operationDataProvider;
         this.recordDataProvider = recordDataProvider;
+        this.operationHandlerRegistry = operationHandlerRegistry;
     }
 
     @Override
@@ -36,9 +38,7 @@ public class PerformOperationUseCaseImpl implements PerformOperationUseCase {
 
         user.deductBalance(operationCost);
 
-        request.getType().validateOperands(request.getOperands());
-
-        String result = request.getType().execute(request.getOperands());
+        String result = operationHandlerRegistry.getHandler(request.getType()).handle(request.getOperands());
 
         userDataProvider.updateBalance(user.getId(), user.getBalance());
 
