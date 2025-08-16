@@ -17,6 +17,8 @@ public class RandomStringOperationHandler extends AbstractOperationHandler imple
 
     @Override
     public String handle(List<BigDecimal> operands) {
+        validateOperands(operands);
+
         int length = operands != null && !operands.isEmpty()
                 ? operands.get(0).intValue()
                 : 10;
@@ -25,5 +27,17 @@ public class RandomStringOperationHandler extends AbstractOperationHandler imple
     }
 
     @Override
-    public void validateOperands(List<BigDecimal> operands) { }
+    public void validateOperands(List<BigDecimal> operands) {
+        requireExactly(1, operands);
+
+        BigDecimal operand = operands.get(0);
+        BigDecimal min = BigDecimal.ONE;
+        BigDecimal max = BigDecimal.valueOf(32);
+
+        if (operand.compareTo(min) < 0 || operand.compareTo(max) > 0) {
+            throw new IllegalArgumentException(
+                    String.format("Operand must be between %s and %s. Provided: %s", min, max, operand)
+            );
+        }
+    }
 }
