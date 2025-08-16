@@ -43,7 +43,11 @@ public class RandomOrgFeignConfig {
 
     @Bean
     public Retryer feignRetryer() {
-        return Retryer.NEVER_RETRY;
+        return new Retryer.Default(
+                100,
+                1000,
+                3
+        );
     }
 
     @Bean
