@@ -14,7 +14,9 @@ public class SquareRootOperationHandler extends AbstractOperationHandler impleme
 
         BigDecimal input = operands.get(0);
         if (input.compareTo(BigDecimal.ZERO) < 0) {
-            throw new ArithmeticException("Cannot compute square root of negative number");
+            throw new ArithmeticException(
+                    String.format("Square root is not defined for negative numbers. Provided value: %s", input)
+            );
         }
 
         double sqrt = Math.sqrt(input.doubleValue());
