@@ -11,3 +11,9 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
+random-org:
+  feign-logger-level: full
+logging:
+  level:
+    feign: DEBUG
+    com.fontolan.calculator.infrastructure.external.randomorg.RandomOrgFeign: DEBUG
