@@ -50,6 +50,7 @@ public final class AuthConstants {
         {
             "id": "2da3cf5c-2439-404f-a3c8-a13e96ba0dca",
             "username": "john.doe",
+            "balance": 98.45,
             "status": "ACTIVE"
         }
     """;

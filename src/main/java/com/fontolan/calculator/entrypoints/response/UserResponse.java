@@ -4,6 +4,7 @@ import com.fontolan.calculator.domain.enums.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
@@ -11,5 +12,6 @@ import java.util.UUID;
 public class UserResponse {
     private UUID id;
     private String username;
+    private BigDecimal balance;
     private UserStatus status;
 }
