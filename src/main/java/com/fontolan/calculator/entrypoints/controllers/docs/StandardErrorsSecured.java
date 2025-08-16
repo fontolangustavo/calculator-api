@@ -27,6 +27,24 @@ import java.lang.annotation.Target;
                 )
         ),
         @ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = ApiErrorResponse.class),
+                        examples = @ExampleObject(name = "unauthorized", value = ExampleConstants.UNAUTHORIZED_ERR)
+                )
+        ),
+        @ApiResponse(
+                responseCode = "403",
+                description = "Forbidden",
+                content = @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = ApiErrorResponse.class),
+                        examples = @ExampleObject(name = "forbidden", value = ExampleConstants.FORBIDDEN_ERR)
+                )
+        ),
+        @ApiResponse(
                 responseCode = "500",
                 description = "Unexpected error",
                 content = @Content(
@@ -36,4 +54,4 @@ import java.lang.annotation.Target;
                 )
         )
 })
-public @interface StandardErrors {}
+public @interface StandardErrorsSecured {}

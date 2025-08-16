@@ -1,7 +1,7 @@
 package com.fontolan.calculator.entrypoints.controllers;
 
 import com.fontolan.calculator.entrypoints.controllers.docs.ExampleConstants;
-import com.fontolan.calculator.entrypoints.controllers.docs.StandardErrors;
+import com.fontolan.calculator.entrypoints.controllers.docs.StandardErrorsSecured;
 import com.fontolan.calculator.entrypoints.request.OperationFilterRequest;
 import com.fontolan.calculator.entrypoints.request.OperationRequest;
 import com.fontolan.calculator.entrypoints.response.OperationResponse;
@@ -54,7 +54,7 @@ public interface OperationController {
                     }
             )
     )
-    @StandardErrors
+    @StandardErrorsSecured
     @PostMapping
     ResponseEntity<OperationResponse> executeOperation(
             @Parameter(hidden = true) @AuthenticationPrincipal String username,
@@ -74,7 +74,7 @@ public interface OperationController {
                     examples = @ExampleObject(name = "types-page", value = ExampleConstants.OP_TYPES_PAGE_OK)
             )
     )
-    @StandardErrors
+    @StandardErrorsSecured
     @GetMapping("/types")
     ResponseEntity<Page<OperationTypeResponse>> listAvailableOperations(
             @Valid OperationFilterRequest request
