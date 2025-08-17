@@ -2,16 +2,16 @@ package com.fontolan.calculator.unit.application.usecases;
 
 import com.fontolan.calculator.application.usecases.record.impl.GetUserRecordsUseCaseImpl;
 import com.fontolan.calculator.domain.enums.OperationType;
+import com.fontolan.calculator.domain.model.Record;
 import com.fontolan.calculator.entrypoints.request.RecordFilterRequest;
 import com.fontolan.calculator.infrastructure.dataprovider.RecordDataProvider;
-import com.fontolan.calculator.domain.model.Record;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,7 +55,7 @@ public class GetUserRecordsUseCaseImplTest {
                 "100",
                 BigDecimal.valueOf(500),
                 "100 + 50 = 150",
-                LocalDateTime.now(),
+                Instant.now(),
                 null
         );
     }

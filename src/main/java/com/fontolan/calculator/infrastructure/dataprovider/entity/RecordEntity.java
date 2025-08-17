@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -35,6 +35,6 @@ public class RecordEntity {
     private String amount;
     private BigDecimal userBalance;
     private String operationResponse;
-    private LocalDateTime createdAt;
-    private LocalDateTime deletedAt;
+    private Instant createdAt;
+    private Instant deletedAt;
 }

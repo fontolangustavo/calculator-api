@@ -7,7 +7,7 @@ import com.fontolan.calculator.infrastructure.mapper.RecordEntityMapper;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +18,7 @@ class RecordEntityMapperTest {
 
     @Test
     void shouldConvertToEntity() {
-        Record record = new Record(UUID.randomUUID(), UUID.randomUUID(),OperationType.ADDITION, "7 + 2", BigDecimal.TEN, "9", LocalDateTime.now(), null);
+        Record record = new Record(UUID.randomUUID(), UUID.randomUUID(),OperationType.ADDITION, "7 + 2", BigDecimal.TEN, "9", Instant.now(), null);
 
         RecordEntity entity = mapper.toEntity(record);
 

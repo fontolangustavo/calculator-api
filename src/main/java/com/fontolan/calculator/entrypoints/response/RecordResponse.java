@@ -3,7 +3,7 @@ package com.fontolan.calculator.entrypoints.response;
 import com.fontolan.calculator.domain.enums.OperationType;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 public class RecordResponse {
@@ -12,7 +12,7 @@ public class RecordResponse {
     private String amount;
     private String operationResponse;
     private BigDecimal userBalance;
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     public UUID getId() { return id; }
     public void setId(UUID id) { this.id = id; }
@@ -24,6 +24,12 @@ public class RecordResponse {
     public void setOperationResponse(String operationResponse) { this.operationResponse = operationResponse; }
     public BigDecimal getUserBalance() { return userBalance; }
     public void setUserBalance(BigDecimal userBalance) { this.userBalance = userBalance; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
 }

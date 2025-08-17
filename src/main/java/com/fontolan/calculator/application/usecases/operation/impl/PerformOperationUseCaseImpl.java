@@ -12,7 +12,7 @@ import com.fontolan.calculator.infrastructure.dataprovider.UserDataProvider;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Service
@@ -49,7 +49,7 @@ public class PerformOperationUseCaseImpl implements PerformOperationUseCase {
                 request.getOperands().toString(),
                 user.getBalance(),
                 result,
-                LocalDateTime.now(),
+                Instant.now(),
                 null
         );
 

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -43,7 +44,7 @@ public class RecordDataProviderImpl implements RecordDataProvider {
         var entity = recordRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Record not found: " + id));
 
-        entity.setDeletedAt(LocalDateTime.now());
+        entity.setDeletedAt(Instant.now());
         recordRepository.save(entity);
     }
 

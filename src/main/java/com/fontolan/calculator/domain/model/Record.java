@@ -3,7 +3,7 @@ package com.fontolan.calculator.domain.model;
 import com.fontolan.calculator.domain.enums.OperationType;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 public class Record {
@@ -13,10 +13,11 @@ public class Record {
     private String amount;
     private BigDecimal userBalance;
     private String operationResponse;
-    private LocalDateTime createdAt;
-    private LocalDateTime deletedAt;
+    private Instant createdAt;
+    private Instant deletedAt;
 
-    public Record(UUID id, UUID userId, OperationType operationType, String amount, BigDecimal userBalance, String operationResponse, LocalDateTime createdAt, LocalDateTime deletedAt) {
+
+    public Record(UUID id, UUID userId, OperationType operationType, String amount, BigDecimal userBalance, String operationResponse, Instant createdAt, Instant deletedAt) {
         this.id = id;
         this.userId = userId;
         this.operationType = operationType;
@@ -75,22 +76,22 @@ public class Record {
         this.operationResponse = operationResponse;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getDeletedAt() {
+    public Instant getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(LocalDateTime deletedAt) {
+    public void setDeletedAt(Instant deletedAt) {
         this.deletedAt = deletedAt;
     }
 
     public boolean isDeleted() { return deletedAt != null; }
-    public void markDeleted() { this.deletedAt = LocalDateTime.now(); }
+    public void markDeleted() { this.deletedAt = Instant.now(); }
 }

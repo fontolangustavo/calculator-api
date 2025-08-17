@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -50,7 +50,7 @@ class DeleteRecordUseCaseImplTest {
         Record record = mockRecord();
         record.setId(recordId);
         record.setUserId(userId);
-        record.setCreatedAt(LocalDateTime.now());
+        record.setCreatedAt(Instant.now());
         record.setOperationResponse("5");
         record.setAmount("2+3");
         record.setUserBalance(BigDecimal.valueOf(95));
@@ -107,7 +107,7 @@ class DeleteRecordUseCaseImplTest {
                 "100",
                 BigDecimal.valueOf(500),
                 "100 + 50 = 150",
-                LocalDateTime.now(),
+                Instant.now(),
                 null
         );
     }

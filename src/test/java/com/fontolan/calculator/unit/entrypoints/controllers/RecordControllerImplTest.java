@@ -18,7 +18,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -78,6 +78,6 @@ class RecordControllerImplTest {
     }
 
     private Record mockRecord() {
-        return new Record(UUID.randomUUID(), UUID.randomUUID(), OperationType.ADDITION, "5 + 4", BigDecimal.TEN, "9", LocalDateTime.now(), null);
+        return new Record(UUID.randomUUID(), UUID.randomUUID(), OperationType.ADDITION, "5 + 4", BigDecimal.TEN, "9", Instant.now(), null);
     }
 }
