@@ -13,6 +13,7 @@ import org.springframework.test.context.TestPropertySource;
 @ActiveProfiles("test")
 @TestPropertySource(properties = {
         "security.jwt.secret=this-is-my-fake-test-secret-for-use-in-test",
-        "security.jwt.expiration=3600000"
+        "security.jwt.expiration=3600000",
+        "random-org.api-key=fake-random-api-key"
 })
 public class CucumberSpringConfiguration { }
